@@ -82,7 +82,7 @@ export class RapidComponentHelper {
         this.updateFieldSpecificationValidation(name, false, false)
     }
 
-    private addValidationError(name: string) {
+    public addValidationError(name: string) {
         this.updateFieldSpecificationValidation(name, true, true)
     }
 
