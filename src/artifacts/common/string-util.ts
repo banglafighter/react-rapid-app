@@ -5,7 +5,7 @@ export default class StringUtil {
     }
 
     public static camelCaseToHumanReadable(text: string) {
-        let words = text.match(/[A-Za-z][a-z]*/g) || [];
+        let words = text.match(/[A-Za-z0-9][a-z]*/g) || [];
         return words.map(this.capitalize).join(" ");
     }
 
