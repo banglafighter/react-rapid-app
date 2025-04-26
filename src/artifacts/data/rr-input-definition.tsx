@@ -50,6 +50,7 @@ export interface BaseInputDefinition extends InputDataDefinition {
 
     changeEvent?: RapidInputEvent
     blurEvent?: RapidInputEvent
+    keyDownEvent?: RapidInputEvent
 
     customValidation?: CustomValidation;
     wrapperClass?: string

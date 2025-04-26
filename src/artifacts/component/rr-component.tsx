@@ -184,6 +184,7 @@ export default class RapidComponent<P extends RapidProps, S extends RapidCompone
     public setupFieldAttrs(name: string) {
         let inputAttributes: any = this.rapidComponentHelper.getInputDefinitionToAttributes(name)
         this.rapidComponentHelper.handleOnChangeEvent(inputAttributes)
+        this.rapidComponentHelper.handleOnKewDownEvent(inputAttributes)
         this.rapidComponentHelper.handleOnBlurEvent(inputAttributes)
         this.rapidComponentHelper.updateInputValue(name, inputAttributes)
         return inputAttributes

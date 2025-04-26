@@ -190,6 +190,15 @@ export class RapidComponentHelper {
         return inputAttributes
     }
 
+    public handleOnKewDownEvent(inputAttributes: any) {
+        const _this = this;
+        inputAttributes.onKeyDown = (target: any) => {
+            const name = inputAttributes.name;
+            _this.fireInputEvent(_this.getInputEvent(name, "keyDownEvent"), target)
+        };
+        return inputAttributes
+    }
+
     public updateInputValue(name: string, inputAttributes: any) {
         let definition: any = this.fieldSpecification.getDefByName(name)
         let defaultValue = ""
