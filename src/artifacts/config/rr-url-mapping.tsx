@@ -2,6 +2,7 @@ import RapidLayoutInfoData from "../data/rr-layout-info-data";
 
 
 export default class RapidURLMapping {
+    public pageWithLayout: Array<RapidLayoutInfoData> = [];
 
     public publicLayout: RapidLayoutInfoData = new RapidLayoutInfoData();
     public privateLayout: RapidLayoutInfoData = new RapidLayoutInfoData();
