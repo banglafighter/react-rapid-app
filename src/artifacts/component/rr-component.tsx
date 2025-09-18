@@ -205,6 +205,13 @@ export default class RapidComponent<P extends RapidProps, S extends RapidCompone
         throw new RapidException(message)
     }
 
+    public setInputValidationError(name: string, errorMessage: any, exceptionMessage: any = "Data Validation Error") {
+        this.rapidComponentHelper.showServerSideFormValidationError({[name]: errorMessage})
+        if (exceptionMessage) {
+            throw new RapidException(exceptionMessage)
+        }
+    }
+
     public setFormData(formData: { [key: string]: any }) {
         this.state.formData = formData
         this.rapidComponentHelper.setFormData(formData)
