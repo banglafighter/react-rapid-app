@@ -212,10 +212,10 @@ export default class RapidComponent<P extends RapidProps, S extends RapidCompone
         }
     }
 
-    public setFormData(formData: { [key: string]: any }) {
+    public setFormData(formData: { [key: string]: any }, afterNotify?: () => void) {
         this.state.formData = formData
         this.rapidComponentHelper.setFormData(formData)
-        this.notifyComponentChange()
+        this.notifyComponentChange(afterNotify)
     }
 
     public resetFormData() {
