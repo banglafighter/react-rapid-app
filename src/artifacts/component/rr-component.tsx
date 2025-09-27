@@ -176,9 +176,9 @@ export default class RapidComponent<P extends RapidProps, S extends RapidCompone
         this.rapidComponentHelper.setFormData(this.state.formData)
     }
 
-    public updateInputValue(name: string, value: any) {
+    public updateInputValue(name: string, value: any, afterNotify?: () => void) {
         this.updateInputValueWithoutNotify(name, value)
-        this.notifyComponentChange()
+        this.notifyComponentChange(afterNotify)
     }
 
     public setupFieldAttrs(name: string) {
