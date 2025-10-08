@@ -37,7 +37,7 @@ export default class StringUtil {
         return text.replace(/^\d+/, "");
     }
 
-    static pyUnderscoreName(name: string): string {
+    static underscoreName(name: string): string {
         name = this.lowerFirstChar(name);
         name = this.systemReadable(name);
         name = this.removeSpecialCharacter(name);
