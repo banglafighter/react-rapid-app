@@ -49,8 +49,10 @@ export default class StringUtil {
         return text.replace(/\s+/g, to);
     }
 
-    static humanReadable(text: string | null, defaultValue: string | null = null): string | null {
-        if (text === null) return defaultValue;
+    static humanReadable(text: string | null | undefined, defaultValue: string | null = null): string | null {
+        if (text === null || text === undefined) {
+            return defaultValue
+        }
         text = this.camelcaseTo(text, " ");
         text = this.findAndReplaceWith(text, "-", " ");
         text = text.trim();
@@ -59,7 +61,9 @@ export default class StringUtil {
     }
 
     static textToUrlText(text: string | null, defaultValue: string | null = null): string | null {
-        if (!text) return defaultValue;
+        if (!text) {
+            return defaultValue
+        }
         text = this.camelcaseTo(text, "-");
         text = this.findAndReplaceWith(text, " ", "-");
         text = this.findAndReplaceWith(text, "_", "-");
@@ -74,4 +78,5 @@ export default class StringUtil {
     static padZero(number: number, width: number = 2): string {
         return number.toString().padStart(width, "0");
     }
+
 }
