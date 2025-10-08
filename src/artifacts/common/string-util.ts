@@ -1,94 +1,77 @@
 export default class StringUtil {
 
-    public static capitalize(word: string) {
-        return word.charAt(0).toUpperCase() + word.substring(1);
+    static findAndReplaceWith(text: string, find: string, replace: string): string {
+        return text.split(find).join(replace);
     }
 
-    public static camelCaseToHumanReadable(text: string) {
-        let words = text.match(/[A-Za-z0-9][a-z]*/g) || [];
-        return words.map(this.capitalize).join(" ");
+    static lowerFirstChar(text: string): string {
+        return text ? text.charAt(0).toLowerCase() + text.slice(1) : "";
     }
 
-    public static smallFirstLatter(word: string) {
-        return word.charAt(0).toLowerCase() + word.slice(1);
+    static camelcaseTo(text: string, to: string = "_"): string {
+        text = text.trim();
+        return text.replace(/(?<!^)(?=[A-Z])/g, to);
     }
 
-    public static capitalizeFirstLetter(word: string) {
-        return word.charAt(0).toUpperCase() + word.slice(1);
+    static replaceMultipleOccurrenceToSingleWith(text: string, to: string = "_"): string {
+        const escaped = to.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`${escaped}+`, "g");
+        return text.replace(regex, to);
     }
 
-    public static camelCaseTo(text: string, char: string = "_") {
-        return text.replaceAll(/[A-Z]/g, letter => char + letter);
+    static systemReadable(text: string): string {
+        text = this.camelcaseTo(text, "_");
+        text = this.findAndReplaceWith(text, " ", "_");
+        text = this.findAndReplaceWith(text, "-", "_");
+        text = this.replaceMultipleOccurrenceToSingleWith(text, "_");
+        text = text.replace(/[^a-zA-Z0-9_]/g, "");
+        return text.trim().toLowerCase();
     }
 
-    public static splitCamelCaseToSpace(text: string) {
-        text = text.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1");
-        text = this.containSingleSpace(text)
-        return text.trim()
+    static removeSpecialCharacter(text: string, to: string = ""): string {
+        // Includes Bangla Unicode range (\u0980-\u09FF)
+        return text.replace(/[^\w\s/\-\u0980-\u09FF]/g, to);
     }
 
-    public static containSingleSpace(text: string) {
-        return text.replace(/ +(?= )/g, '');
+    static removeLeadingNumber(text: string): string {
+        return text.replace(/^\d+/, "");
     }
 
-    public static replaceMoreThanOneOccurrence(text: string, char: any, replace: any = undefined, regex: any = undefined) {
-        if (!regex) {
-            regex = char
-        }
-        regex += "{2,}"
-        if (!replace) {
-            replace = char
-        }
-        let re = new RegExp(regex, "g");
-        return text.replace(re, replace);
+    static pyUnderscoreName(name: string): string {
+        name = this.lowerFirstChar(name);
+        name = this.systemReadable(name);
+        name = this.removeSpecialCharacter(name);
+        name = this.removeLeadingNumber(name);
+        return name;
     }
 
-    public static findReplace(text: string, find: string, replace: string) {
-        let findRegex = new RegExp(find, 'g');
-        return text.replaceAll(findRegex, replace);
+    static replaceSpaceWith(text: string, to: string = "_"): string {
+        return text.replace(/\s+/g, to);
     }
 
-    public static removeSpecialCharacter(text: string, replace: string = "") {
-        if (text) {
-            text = text.replace(/[^\w\s-_/]/gi, replace);
-        }
-        return text
+    static humanReadable(text: string | null, defaultValue: string | null = null): string | null {
+        if (text === null) return defaultValue;
+        text = this.camelcaseTo(text, " ");
+        text = this.findAndReplaceWith(text, "-", " ");
+        text = text.trim();
+        text = text.replace(/\b\w/g, char => char.toUpperCase());
+        return this.replaceSpaceWith(text, " ");
     }
 
-    public static nameToURL(name: string) {
-        if (!name) {
-            return name
-        }
-        let url: string = StringUtil.splitCamelCaseToSpace(name)
-        url = StringUtil.findReplace(url, " ", "-")
-        url = StringUtil.findReplace(url, "_", "-")
-        url = StringUtil.replaceMoreThanOneOccurrence(url, "_")
-        url = StringUtil.replaceMoreThanOneOccurrence(url, undefined, "-", "\\-")
-        url = StringUtil.removeSpecialCharacter(url)
-        url = url.toLowerCase()
-        return url
+    static textToUrlText(text: string | null, defaultValue: string | null = null): string | null {
+        if (!text) return defaultValue;
+        text = this.camelcaseTo(text, "-");
+        text = this.findAndReplaceWith(text, " ", "-");
+        text = this.findAndReplaceWith(text, "_", "-");
+        text = this.replaceMultipleOccurrenceToSingleWith(text, "-");
+        text = this.removeSpecialCharacter(text);
+        text = text.trim();
+        text = text.replace(/^-+|-+$/g, "");
+        text = text.toLowerCase();
+        return text;
     }
 
-    public static nameToLabel(name: string) {
-        if (!name) {
-            return name
-        }
-        let label: string = StringUtil.camelCaseToHumanReadable(name)
-        label = StringUtil.replaceMoreThanOneOccurrence(label, undefined, "-", "\\-")
-        label = StringUtil.findReplace(label, "-", " ")
-        label = StringUtil.removeSpecialCharacter(label)
-        label = StringUtil.capitalizeFirstLetter(label)
-        return label
+    static padZero(number: number, width: number = 2): string {
+        return number.toString().padStart(width, "0");
     }
-
-    public static nameToSystemName(name: string) {
-        if (!name) {
-            return name
-        }
-        let systemName: string = StringUtil.nameToLabel(name)
-        systemName = StringUtil.findReplace(systemName, " ", "")
-        systemName = StringUtil.smallFirstLatter(systemName)
-        return systemName
-    }
-
 }
